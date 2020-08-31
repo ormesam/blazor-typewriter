@@ -1,0 +1,22 @@
+﻿@page "/"
+@using BlazorTypewriter;
+
+<div>
+    <h1>Hello, world!</h1>
+
+    <p><Typewriter Factory="@typewriter" /></p>
+</div>
+
+@code{
+    TypewriterFactory typewriter = new TypewriterFactory()
+        .TypeString("test")
+        .Pause(3000)
+        .DeleteAll()
+        .Pause(500)
+        .TypeString("test 2")
+        .Pause(3000)
+        .Delete(3)
+        .Pause(4000)
+        .DeleteAll()
+        .Loop();
+}

@@ -1,3 +1,16 @@
-﻿<div class="my-component">
-    This Blazor component is defined in the <strong>BlazorTypewriter</strong> package.
-</div>
+﻿<span class="typewriter">@Factory.DisplayText</span>
+
+@code {
+    [Parameter]
+    public TypewriterFactory Factory { get; set; }
+
+    protected override Task OnInitializedAsync() {
+        Factory.DisplayChanged += (s, e) => {
+            InvokeAsync(StateHasChanged);
+        };
+
+        Task.Run(() => Factory.Run());
+
+        return base.OnInitializedAsync();
+    }
+}
