@@ -7,7 +7,7 @@ namespace BlazorTypewriter {
         private readonly IList<ITypewriterStep> steps;
         private bool loop;
         private string displayText;
-        private readonly int characterPause;
+        private readonly int defaultCharacterPause;
 
         public string DisplayText {
             get { return displayText; }
@@ -21,14 +21,14 @@ namespace BlazorTypewriter {
 
         public event EventHandler<EventArgs> DisplayChanged;
 
-        public TypewriterFactory(string startingText = "", int characterPause = 100) {
+        public TypewriterFactory(string startingText = "", int defaultCharacterPause = 100) {
             displayText = startingText;
-            this.characterPause = characterPause;
+            this.defaultCharacterPause = defaultCharacterPause;
             steps = new List<ITypewriterStep>();
         }
 
-        public TypewriterFactory TypeString(string str) {
-            steps.Add(new StringTyperStep(str, characterPause));
+        public TypewriterFactory TypeString(string str, int? characterPause = null) {
+            steps.Add(new StringTyperStep(str, characterPause ?? defaultCharacterPause));
 
             return this;
         }
@@ -39,14 +39,14 @@ namespace BlazorTypewriter {
             return this;
         }
 
-        public TypewriterFactory DeleteAll() {
-            steps.Add(new DeleteStep(characterPause));
+        public TypewriterFactory DeleteAll(int? characterPause = null) {
+            steps.Add(new DeleteStep(characterPause ?? defaultCharacterPause));
 
             return this;
         }
 
-        public TypewriterFactory Delete(int numberOfCharacters) {
-            steps.Add(new DeleteStep(numberOfCharacters, characterPause));
+        public TypewriterFactory Delete(int numberOfCharacters, int? characterPause = null) {
+            steps.Add(new DeleteStep(numberOfCharacters, characterPause ?? defaultCharacterPause));
 
             return this;
         }

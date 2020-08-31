@@ -2,21 +2,25 @@
 @using BlazorTypewriter;
 
 <div>
-    <h1>Hello, world!</h1>
+    <h1><Typewriter Factory="@headerTypewriter" /></h1>
 
-    <p><Typewriter Factory="@typewriter" /></p>
+    <p><Typewriter Factory="@bodyTypewriter" /></p>
 </div>
 
 @code{
-    TypewriterFactory typewriter = new TypewriterFactory()
-        .TypeString("test")
-        .Pause(3000)
+    TypewriterFactory headerTypewriter = new TypewriterFactory(defaultCharacterPause: 125)
+        .TypeString("Typewriter Example");
+
+    TypewriterFactory bodyTypewriter = new TypewriterFactory(defaultCharacterPause: 6)
+        .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sollicitudin facilisis tortor, quis ornare ex finibus nec. Nulla fermentum at metus sed venenatis. Aenean quis massa euismod, sollicitudin ex sed, aliquam tortor. Mauris quam justo, hendrerit nec tortor ac, lobortis dapibus odio. Duis semper nisl porta vulputate elementum.")
+        .Pause(2000)
         .DeleteAll()
+        .TypeString("Second line... Lorem ipsum dolor sit amet.", 10)
         .Pause(500)
-        .TypeString("test 2")
-        .Pause(3000)
-        .Delete(3)
-        .Pause(4000)
-        .DeleteAll()
+        .DeleteAll(10)
+        .TypeString("Third line... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sollicitudin facilisis tortor, quis ornare ex finibus nec.", 20)
+        .Pause(500)
+        .DeleteAll(10)
+        .Pause(500)
         .Loop();
 }
