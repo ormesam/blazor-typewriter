@@ -51,6 +51,12 @@ namespace BlazorTypewriter {
             return this;
         }
 
+        public TypewriterFactory OneTimePause(int milliseconds) {
+            steps.Add(new OneTimeDelayStep(milliseconds));
+
+            return this;
+        }
+
         public TypewriterFactory Loop(bool value = true) {
             this.loop = value;
 
@@ -93,6 +99,25 @@ namespace BlazorTypewriter {
 
                 await Task.Delay(characterPause);
             }
+        }
+    }
+
+    internal class OneTimeDelayStep : ITypewriterStep {
+        private readonly int milliseconds;
+        private bool hasRan;
+
+        public OneTimeDelayStep(int milliseconds) {
+            this.milliseconds = milliseconds;
+        }
+
+        public Task Run(TypewriterFactory factory) {
+            if (hasRan) {
+                return Task.CompletedTask;
+            }
+
+            hasRan = true;
+
+            return Task.Delay(milliseconds);
         }
     }
 
