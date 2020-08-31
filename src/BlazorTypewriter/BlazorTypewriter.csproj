@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <Authors>Sam Orme</Authors>
+    <Version>0.0.1</Version>
+    <RepositoryUrl>https://github.com/ormesam/blazor-typewriter</RepositoryUrl>
   </PropertyGroup>
 
 
