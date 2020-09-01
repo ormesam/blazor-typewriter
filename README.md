@@ -2,17 +2,7 @@
 
 ## Installation
 
-To Install
-
-```
-Install-Package BlazorTypewriter
-```
-
-or
-
-```
-dotnet add package BlazorTypewriter
-```
+// TODO: nuget package
 
 Add stylesheet to head section
 
