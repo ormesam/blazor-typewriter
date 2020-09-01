@@ -152,7 +152,7 @@ namespace BlazorTypewriter {
         public async Task Run(TypewriterFactory factory) {
             int charaterCount = deleteAll ? factory.DisplayText.Length : numberOfCharacters;
 
-            while (charaterCount > 0) {
+            while (charaterCount > 0 && factory.DisplayText.Length > 0) {
                 factory.DisplayText = factory.DisplayText.Substring(0, factory.DisplayText.Length - 1);
                 charaterCount--;
 

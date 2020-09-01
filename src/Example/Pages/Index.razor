@@ -4,23 +4,23 @@
 <div>
     <h1><Typewriter Factory="@headerTypewriter" /></h1>
 
-    <p><Typewriter Factory="@bodyTypewriter" /></p>
+    <p><Typewriter Factory="@typewriter" /></p>
 </div>
 
 @code{
     TypewriterFactory headerTypewriter = new TypewriterFactory(defaultCharacterPause: 125)
         .TypeString("Typewriter Example");
 
-    TypewriterFactory bodyTypewriter = new TypewriterFactory(defaultCharacterPause: 6)
-        .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sollicitudin facilisis tortor, quis ornare ex finibus nec. Nulla fermentum at metus sed venenatis. Aenean quis massa euismod, sollicitudin ex sed, aliquam tortor. Mauris quam justo, hendrerit nec tortor ac, lobortis dapibus odio. Duis semper nisl porta vulputate elementum.")
-        .Pause(2000)
+    TypewriterFactory typewriter = new TypewriterFactory(defaultCharacterPause: 6)
+        .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+        .Pause(1000)
         .DeleteAll()
-        .TypeString("Second line... Lorem ipsum dolor sit amet.", 10)
+        .TypeString("Second line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 50)
         .Pause(500)
-        .DeleteAll(10)
-        .TypeString("Third line... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sollicitudin facilisis tortor, quis ornare ex finibus nec.", 20)
+        .DeleteAll(30)
+        .TypeString("Third line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 20)
         .Pause(500)
-        .DeleteAll(10)
-        .Pause(500)
+        .DeleteAll(20)
+        .Pause(1000)
         .Loop();
 }
