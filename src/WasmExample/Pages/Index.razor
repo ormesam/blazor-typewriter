@@ -1,33 +1,16 @@
-# Blazor Typewriter
+﻿@page "/"
+@using BlazorTypewriter;
 
-## Installation
+<div>
+    <h1><Typewriter Factory="@headerTypewriter" CustomClass="custom-cursor" /></h1>
 
-To Install
+    <p><Typewriter Factory="@typewriter" /></p>
+</div>
 
-```
-Install-Package BlazorTypewriter
-```
+@code{
+    TypewriterFactory headerTypewriter = new TypewriterFactory(defaultCharacterPause: 125)
+        .TypeString("Typewriter Example");
 
-or
-
-```
-dotnet add package BlazorTypewriter
-```
-
-Add stylesheet to head section
-
-```
-<link href="_content/BlazorTypewriter/styles.css" rel="stylesheet" />
-```
-
-## Usage
-
-![demo](data\demo.gif)
-
-```html
-<p><Typewriter Factory="@typewriter" /></p>
-
-@code {
     TypewriterFactory typewriter = new TypewriterFactory(defaultCharacterPause: 6)
         .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
         .Pause(1000)
@@ -38,11 +21,6 @@ Add stylesheet to head section
         .TypeString("Third line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 20)
         .Pause(500)
         .DeleteAll(20)
-        .Pause(500)
+        .Pause(1000)
         .Loop();
 }
-```
-
-## License
-
-This project is licensed under the terms of the [MIT license](https://github.com/ormesam/blazor-typewriter/blob/master/LICENSE).
