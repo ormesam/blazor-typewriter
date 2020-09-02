@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorTypewriter {
     public class TypewriterFactory {
+        private readonly CancellationTokenSource cancellationToken;
         private readonly IList<ITypewriterStep> steps;
         private bool loop;
         private string displayText;
@@ -24,6 +26,8 @@ namespace BlazorTypewriter {
         public TypewriterFactory(string startingText = "", int defaultCharacterPause = 100) {
             displayText = startingText;
             this.defaultCharacterPause = defaultCharacterPause;
+            this.cancellationToken = new CancellationTokenSource();
+
             steps = new List<ITypewriterStep>();
         }
 
@@ -65,7 +69,7 @@ namespace BlazorTypewriter {
 
         internal async Task Run() {
             if (loop) {
-                while (true) {
+                while (!cancellationToken.IsCancellationRequested) {
                     await RunTypewriter();
                 }
             } else {
@@ -73,8 +77,20 @@ namespace BlazorTypewriter {
             }
         }
 
+        internal void Stop() {
+            this.cancellationToken.Cancel();
+        }
+
         private async Task RunTypewriter() {
+            int count = 1;
+
             foreach (var step in steps) {
+                if (this.cancellationToken.IsCancellationRequested) {
+                    return;
+                }
+
+                Console.WriteLine($"Step {count++}");
+
                 await step.Run(this);
             }
         }

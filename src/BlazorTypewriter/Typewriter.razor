@@ -1,4 +1,6 @@
-﻿<span class="typewriter @CustomClass">@Factory.DisplayText</span>
+﻿@implements IDisposable
+
+<span class="typewriter @CustomClass">@Factory.DisplayText</span>
 
 @code {
     [Parameter]
@@ -8,12 +10,19 @@
     public string CustomClass { get; set; }
 
     protected override Task OnInitializedAsync() {
-        Factory.DisplayChanged += (s, e) => {
-            InvokeAsync(StateHasChanged);
-        };
+        Factory.DisplayChanged += Factory_DisplayChanged;
 
         Task.Run(() => Factory.Run());
 
         return base.OnInitializedAsync();
+    }
+
+    public void Factory_DisplayChanged(object sender, EventArgs e) {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() {
+        Factory.DisplayChanged -= Factory_DisplayChanged;
+        Factory.Stop();
     }
 }
