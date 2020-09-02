@@ -31,38 +31,69 @@ namespace BlazorTypewriter {
             steps = new List<ITypewriterStep>();
         }
 
+        /// <summary>
+        /// Types a string at the secified speed
+        /// </summary>
+        /// <param name="str">String to be typed</param>
+        /// <param name="characterPause">Delay after each character (overrides default)</param>
+        /// <returns></returns>
         public TypewriterFactory TypeString(string str, int? characterPause = null) {
             steps.Add(new StringTyperStep(str, characterPause ?? defaultCharacterPause));
 
             return this;
         }
 
+        /// <summary>
+        /// Pause for specified milliseconds
+        /// </summary>
+        /// <param name="milliseconds">Milliseconds to pause for</param>
+        /// <returns></returns>
         public TypewriterFactory Pause(int milliseconds) {
             steps.Add(new PauseStep(milliseconds));
 
             return this;
         }
 
+        /// <summary>
+        /// Delete all characters
+        /// </summary>
+        /// <param name="characterPause">Delay after each character (overrides default)</param>
+        /// <returns></returns>
         public TypewriterFactory DeleteAll(int? characterPause = null) {
             steps.Add(new DeleteStep(characterPause ?? defaultCharacterPause));
 
             return this;
         }
 
+        /// <summary>
+        /// Deletes specified number of characters from the end of the string
+        /// </summary>
+        /// <param name="characterPause">Delay after each character (overrides default)</param>
+        /// <returns></returns>
         public TypewriterFactory Delete(int numberOfCharacters, int? characterPause = null) {
             steps.Add(new DeleteStep(numberOfCharacters, characterPause ?? defaultCharacterPause));
 
             return this;
         }
 
+        /// <summary>
+        /// Pause for specified milliseconds
+        /// Only executed once
+        /// </summary>
+        /// <param name="milliseconds">Milliseconds to pause for</param>
+        /// <returns></returns>
         public TypewriterFactory OneTimePause(int milliseconds) {
             steps.Add(new OneTimeDelayStep(milliseconds));
 
             return this;
         }
 
-        public TypewriterFactory Loop(bool value = true) {
-            this.loop = value;
+        /// <summary>
+        /// Loop the effect indefinitely
+        /// </summary>
+        /// <returns></returns>
+        public TypewriterFactory Loop() {
+            this.loop = true;
 
             return this;
         }
