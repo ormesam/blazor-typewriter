@@ -12,7 +12,7 @@ Add stylesheet to head section
 
 ## Usage
 
-![demo](data\demo.gif)
+![demo](data/demo.gif)
 
 ```html
 <p><Typewriter Factory="@typewriter" /></p>
