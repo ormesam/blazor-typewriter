@@ -2,16 +2,16 @@
 @using BlazorTypewriter;
 
 <div>
-    <h1><Typewriter Factory="@headerTypewriter" /></h1>
+    <h1><Typewriter Builder="@headerTypewriter" /></h1>
 
-    <p><Typewriter Factory="@typewriter" /></p>
+    <p><Typewriter Builder="@typewriter" /></p>
 </div>
 
 @code{
-    TypewriterFactory headerTypewriter = new TypewriterFactory(defaultCharacterPause: 125)
+    TypewriterBuilder headerTypewriter = new TypewriterBuilder(defaultCharacterPause: 125)
         .TypeString("Typewriter Example");
 
-    TypewriterFactory typewriter = new TypewriterFactory(defaultCharacterPause: 6)
+    TypewriterBuilder typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
         .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
         .Pause(1000)
         .DeleteAll()

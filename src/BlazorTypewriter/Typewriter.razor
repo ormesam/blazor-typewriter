@@ -1,28 +1,28 @@
 ﻿@implements IDisposable
 
-<span class="typewriter @CustomClass">@Factory.DisplayText</span>
+<span class="typewriter @CustomClass">@Builder.DisplayText</span>
 
 @code {
     [Parameter]
-    public TypewriterFactory Factory { get; set; }
+    public TypewriterBuilder Builder { get; set; }
 
     [Parameter]
     public string CustomClass { get; set; }
 
     protected override Task OnInitializedAsync() {
-        Factory.DisplayChanged += Factory_DisplayChanged;
+        Builder.DisplayChanged += Builder_DisplayChanged;
 
-        Task.Run(() => Factory.Run());
+        Task.Run(() => Builder.Run());
 
         return base.OnInitializedAsync();
     }
 
-    public void Factory_DisplayChanged(object sender, EventArgs e) {
+    public void Builder_DisplayChanged(object sender, EventArgs e) {
         InvokeAsync(StateHasChanged);
     }
 
     public void Dispose() {
-        Factory.DisplayChanged -= Factory_DisplayChanged;
-        Factory.Stop();
+        Builder.DisplayChanged -= Builder_DisplayChanged;
+        Builder.Stop();
     }
 }

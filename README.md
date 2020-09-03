@@ -15,10 +15,10 @@ Add stylesheet to head section
 ![demo](data/demo.gif)
 
 ```html
-<p><Typewriter Factory="@typewriter" /></p>
+<p><Typewriter Builder="@typewriter" /></p>
 
 @code {
-    TypewriterFactory typewriter = new TypewriterFactory(defaultCharacterPause: 6)
+    TypewriterBuilder typewriter = new TypewriterBuilder(defaultCharacterPause: 6)
         .TypeString("First line... Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
         .Pause(1000)
         .DeleteAll()

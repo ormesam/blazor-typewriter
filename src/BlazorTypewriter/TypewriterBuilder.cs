@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorTypewriter {
-    public class TypewriterFactory {
+    public class TypewriterBuilder {
         private readonly CancellationTokenSource cancellationToken;
         private readonly Queue<ITypewriterStep> steps;
         private bool loop;
@@ -24,7 +24,7 @@ namespace BlazorTypewriter {
 
         public event EventHandler<EventArgs> DisplayChanged;
 
-        public TypewriterFactory(string startingText = "", int defaultCharacterPause = 100) {
+        public TypewriterBuilder(string startingText = "", int defaultCharacterPause = 100) {
             displayText = startingText;
             this.defaultCharacterPause = defaultCharacterPause;
             this.cancellationToken = new CancellationTokenSource();
@@ -38,7 +38,7 @@ namespace BlazorTypewriter {
         /// <param name="str">String to be typed</param>
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
-        public TypewriterFactory TypeString(string str, int? characterPause = null) {
+        public TypewriterBuilder TypeString(string str, int? characterPause = null) {
             steps.Enqueue(new StringTyperStep(str, characterPause ?? defaultCharacterPause));
 
             return this;
@@ -49,7 +49,7 @@ namespace BlazorTypewriter {
         /// </summary>
         /// <param name="milliseconds">Milliseconds to pause for</param>
         /// <returns></returns>
-        public TypewriterFactory Pause(int milliseconds) {
+        public TypewriterBuilder Pause(int milliseconds) {
             steps.Enqueue(new PauseStep(milliseconds));
 
             return this;
@@ -60,7 +60,7 @@ namespace BlazorTypewriter {
         /// </summary>
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
-        public TypewriterFactory DeleteAll(int? characterPause = null) {
+        public TypewriterBuilder DeleteAll(int? characterPause = null) {
             steps.Enqueue(new DeleteStep(characterPause ?? defaultCharacterPause));
 
             return this;
@@ -71,7 +71,7 @@ namespace BlazorTypewriter {
         /// </summary>
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
-        public TypewriterFactory Delete(int numberOfCharacters, int? characterPause = null) {
+        public TypewriterBuilder Delete(int numberOfCharacters, int? characterPause = null) {
             steps.Enqueue(new DeleteStep(numberOfCharacters, characterPause ?? defaultCharacterPause));
 
             return this;
@@ -83,7 +83,7 @@ namespace BlazorTypewriter {
         /// </summary>
         /// <param name="milliseconds">Milliseconds to pause for</param>
         /// <returns></returns>
-        public TypewriterFactory OneTimePause(int milliseconds) {
+        public TypewriterBuilder OneTimePause(int milliseconds) {
             steps.Enqueue(new OneTimeDelayStep(milliseconds));
 
             return this;
@@ -93,7 +93,7 @@ namespace BlazorTypewriter {
         /// Loop the effect indefinitely
         /// </summary>
         /// <returns></returns>
-        public TypewriterFactory Loop() {
+        public TypewriterBuilder Loop() {
             this.loop = true;
 
             return this;
@@ -117,87 +117,6 @@ namespace BlazorTypewriter {
 
         internal void Stop() {
             cancellationToken.Cancel();
-        }
-    }
-
-    internal interface ITypewriterStep {
-        Task Run(TypewriterFactory factory);
-    }
-
-    internal class StringTyperStep : ITypewriterStep {
-        private readonly string str;
-        private readonly int characterPause;
-
-        public StringTyperStep(string str, int characterPause) {
-            this.str = str;
-            this.characterPause = characterPause;
-        }
-
-        public async Task Run(TypewriterFactory factory) {
-            for (int i = 0; i < str.Length; i++) {
-                factory.DisplayText += str[i];
-
-                await Task.Delay(characterPause);
-            }
-        }
-    }
-
-    internal class OneTimeDelayStep : ITypewriterStep {
-        private readonly int milliseconds;
-        private bool hasRan;
-
-        public OneTimeDelayStep(int milliseconds) {
-            this.milliseconds = milliseconds;
-        }
-
-        public Task Run(TypewriterFactory factory) {
-            if (hasRan) {
-                return Task.CompletedTask;
-            }
-
-            hasRan = true;
-
-            return Task.Delay(milliseconds);
-        }
-    }
-
-    internal class PauseStep : ITypewriterStep {
-        private readonly int milliseconds;
-
-        public PauseStep(int milliseconds) {
-            this.milliseconds = milliseconds;
-        }
-
-        public Task Run(TypewriterFactory factory) {
-            return Task.Delay(milliseconds);
-        }
-    }
-
-    internal class DeleteStep : ITypewriterStep {
-        private readonly bool deleteAll;
-        private readonly int numberOfCharacters;
-        private readonly int characterPause;
-
-        public DeleteStep(int numberOfCharacters, int characterPause) {
-            this.numberOfCharacters = numberOfCharacters;
-            this.characterPause = characterPause;
-            this.deleteAll = false;
-        }
-
-        public DeleteStep(int characterPause) {
-            this.deleteAll = true;
-            this.characterPause = characterPause;
-        }
-
-        public async Task Run(TypewriterFactory factory) {
-            int charaterCount = deleteAll ? factory.DisplayText.Length : numberOfCharacters;
-
-            while (charaterCount > 0 && factory.DisplayText.Length > 0) {
-                factory.DisplayText = factory.DisplayText.Substring(0, factory.DisplayText.Length - 1);
-                charaterCount--;
-
-                await Task.Delay(characterPause);
-            }
         }
     }
 }
