@@ -100,12 +100,8 @@ namespace BlazorTypewriter {
         }
 
         internal async Task Run() {
-            int count = 1;
-
             while (steps.Any() && !cancellationToken.IsCancellationRequested) {
                 var step = steps.Dequeue();
-
-                Console.WriteLine($"Step {count++}");
 
                 await step.Run(this);
 
