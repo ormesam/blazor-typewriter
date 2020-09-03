@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorTypewriter {
     public class TypewriterFactory {
         private readonly CancellationTokenSource cancellationToken;
-        private readonly IList<ITypewriterStep> steps;
+        private readonly Queue<ITypewriterStep> steps;
         private bool loop;
         private string displayText;
         private readonly int defaultCharacterPause;
@@ -28,7 +29,7 @@ namespace BlazorTypewriter {
             this.defaultCharacterPause = defaultCharacterPause;
             this.cancellationToken = new CancellationTokenSource();
 
-            steps = new List<ITypewriterStep>();
+            steps = new Queue<ITypewriterStep>();
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace BlazorTypewriter {
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
         public TypewriterFactory TypeString(string str, int? characterPause = null) {
-            steps.Add(new StringTyperStep(str, characterPause ?? defaultCharacterPause));
+            steps.Enqueue(new StringTyperStep(str, characterPause ?? defaultCharacterPause));
 
             return this;
         }
@@ -49,7 +50,7 @@ namespace BlazorTypewriter {
         /// <param name="milliseconds">Milliseconds to pause for</param>
         /// <returns></returns>
         public TypewriterFactory Pause(int milliseconds) {
-            steps.Add(new PauseStep(milliseconds));
+            steps.Enqueue(new PauseStep(milliseconds));
 
             return this;
         }
@@ -60,7 +61,7 @@ namespace BlazorTypewriter {
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
         public TypewriterFactory DeleteAll(int? characterPause = null) {
-            steps.Add(new DeleteStep(characterPause ?? defaultCharacterPause));
+            steps.Enqueue(new DeleteStep(characterPause ?? defaultCharacterPause));
 
             return this;
         }
@@ -71,7 +72,7 @@ namespace BlazorTypewriter {
         /// <param name="characterPause">Delay after each character (overrides default)</param>
         /// <returns></returns>
         public TypewriterFactory Delete(int numberOfCharacters, int? characterPause = null) {
-            steps.Add(new DeleteStep(numberOfCharacters, characterPause ?? defaultCharacterPause));
+            steps.Enqueue(new DeleteStep(numberOfCharacters, characterPause ?? defaultCharacterPause));
 
             return this;
         }
@@ -83,7 +84,7 @@ namespace BlazorTypewriter {
         /// <param name="milliseconds">Milliseconds to pause for</param>
         /// <returns></returns>
         public TypewriterFactory OneTimePause(int milliseconds) {
-            steps.Add(new OneTimeDelayStep(milliseconds));
+            steps.Enqueue(new OneTimeDelayStep(milliseconds));
 
             return this;
         }
@@ -99,31 +100,23 @@ namespace BlazorTypewriter {
         }
 
         internal async Task Run() {
-            if (loop) {
-                while (!cancellationToken.IsCancellationRequested) {
-                    await RunTypewriter();
-                }
-            } else {
-                await RunTypewriter();
-            }
-        }
-
-        internal void Stop() {
-            this.cancellationToken.Cancel();
-        }
-
-        private async Task RunTypewriter() {
             int count = 1;
 
-            foreach (var step in steps) {
-                if (this.cancellationToken.IsCancellationRequested) {
-                    return;
-                }
+            while (steps.Any() && !cancellationToken.IsCancellationRequested) {
+                var step = steps.Dequeue();
 
                 Console.WriteLine($"Step {count++}");
 
                 await step.Run(this);
+
+                if (loop) {
+                    steps.Enqueue(step);
+                }
             }
+        }
+
+        internal void Stop() {
+            cancellationToken.Cancel();
         }
     }
 
