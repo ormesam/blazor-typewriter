@@ -2,7 +2,17 @@
 
 ## Installation
 
-// TODO: nuget package
+To Install
+
+```
+Install-Package BlazorTypewriter
+```
+
+or
+
+```
+dotnet add package BlazorTypewriter
+```
 
 Add stylesheet to head section
 
@@ -32,6 +42,8 @@ Add stylesheet to head section
         .Loop();
 }
 ```
+
+To customise the cursor set the `CustomClass` property of the `<Typewriter>` tag and target the `border-color`.
 
 ## License
 
