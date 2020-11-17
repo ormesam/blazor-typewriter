@@ -1,4 +1,5 @@
 # Blazor Typewriter
+A simple typewriter effect library for Blazor applications
 
 ## Installation
 
