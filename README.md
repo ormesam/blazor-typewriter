@@ -3,6 +3,8 @@ A simple typewriter effect library for Blazor applications
 
 ## Installation
 
+https://www.nuget.org/packages/BlazorTypewriter
+
 To Install
 
 ```
