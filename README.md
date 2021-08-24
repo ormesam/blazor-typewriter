@@ -3,7 +3,7 @@ A simple typewriter effect library for Blazor applications
 
 ## Installation
 
-https://www.nuget.org/packages/BlazorTypewriter
+![Nuget](https://img.shields.io/nuget/v/BlazorTypewriter) ![Nuget](https://img.shields.io/nuget/dt/BlazorTypewriter)
 
 To Install
 
