@@ -3,6 +3,8 @@ A simple typewriter effect library for Blazor applications
 
 ## Installation
 
+![Nuget](https://img.shields.io/nuget/v/BlazorTypewriter) ![Nuget](https://img.shields.io/nuget/dt/BlazorTypewriter)
+
 To Install
 
 ```
@@ -23,7 +25,7 @@ Add stylesheet to head section
 
 ## Usage
 
-![demo](data/demo.gif)
+![demo](https://user-images.githubusercontent.com/8319419/154805249-51243708-88eb-4b12-af6d-b6a6601d670b.gif)
 
 ```html
 <p><Typewriter Builder="@typewriter" /></p>
